@@ -1,0 +1,124 @@
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" tools:context=".MainActivity">
+
+    <!--主界面布局-->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/menu"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal">
+
+        <!--首页-->
+        <RadioButton
+            style="@style/menu_bottom"
+            android:id="@+id/rb_home"
+            android:checked="true"
+            android:drawableTop="@drawable/menu_home_selector"
+            android:text="@string/home"/>
+
+        <!--详细-->
+        <RadioButton
+            style="@style/menu_bottom"
+            android:id="@+id/rb_detail"
+            android:drawableTop="@drawable/menu_detail_selector"
+            android:text="@string/detail"/>
+
+        <!--账户-->
+        <RadioButton
+            style="@style/menu_bottom"
+            android:id="@+id/rb_account"
+            android:drawableTop="@drawable/menu_account_selector"
+            android:text="@string/account"/>
+
+        <!--统计-->
+        <RadioButton
+            style="@style/menu_bottom"
+            android:id="@+id/rb_report"
+            android:drawableTop="@drawable/menu_report_selector"
+            android:text="@string/money_report"/>
+
+        <!--更多-->
+        <RadioButton
+            style="@style/menu_bottom"
+            android:id="@+id/rb_more"
+            android:drawableTop="@drawable/menu_more_selector"
+            android:text="@string/more"/>
+
+    </RadioGroup>
+
+    <android.support.v4.view.ViewPager
+        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_above="@id/menu"
+        android:id="@+id/viewPager">
+
+    </android.support.v4.view.ViewPager>
+    </RelativeLayout>
+
+    <!---抽屉布局-->
+    <RelativeLayout android:layout_height="match_parent"
+        android:layout_width="300dp"
+        android:background="#cccccc"
+        android:layout_gravity="start">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/drawer_title">
+        <ImageView
+            android:id="@+id/iv_user_photo"
+            android:background="@drawable/ic_user_photo"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="@dimen/margin_normal"
+            android:src="@drawable/user_photo_shape"
+            />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/btn_logout"
+                android:background="@drawable/button_selector"
+                android:layout_alignParentRight="true"
+                android:layout_centerInParent="true"
+                android:visibility="gone"
+                android:layout_marginRight="@dimen/margin_normal"
+                android:text="@string/logout"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_centerInParent="true"
+                android:layout_toRightOf="@id/iv_user_photo"
+                android:id="@+id/tv_user_name"
+                android:text="@string/default_user_name"/>
+
+        </RelativeLayout>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btn_setting"
+            android:background="@drawable/button_selector"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_margin="@dimen/margin_normal"
+            android:text="@string/setting"/>
+
+        <!--登陆或个人信息-->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/fl_user_login_status"
+            android:layout_below="@id/drawer_title"
+            android:layout_above="@id/btn_setting"
+            android:background="@color/red"></FrameLayout>
+
+    </RelativeLayout>
+
+</android.support.v4.widget.DrawerLayout>

@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="budget_type">
+        <item>食品酒水</item>
+        <item>衣服首饰</item>
+        <item>家具物业</item>
+        <item>行车交通</item>
+        <item>交流通讯</item>
+        <item>娱乐旅游</item>
+        <item>学习进修</item>
+        <item>人情往来</item>
+        <item>医疗保健</item>
+        <item>其他</item>
+    </string-array>
+
+
+    <!--食品酒水子项-->
+    <string-array name="food_water">
+        <item >早午晚餐</item>
+        <item >烟酒茶</item>
+        <item >水果零食</item>
+    </string-array>
+
+    <!--衣服饰品子项-->
+    <string-array name="clothes">
+        <item>衣服裤子</item>
+        <item>鞋帽包包</item>
+        <item>化妆饰品</item>
+    </string-array>
+
+    <!--家具物业子项-->
+    <string-array name="house">
+        <item>日常用品</item>
+        <item>水电煤气</item>
+        <item>房租</item>
+        <item>物业管理</item>
+        <item>维修保养</item>
+    </string-array>
+
+    <!--行车交通子项-->
+    <string-array name="traffic">
+        <item>公车地铁</item>
+        <item>打车租车</item>
+        <item>私家车费用</item>
+    </string-array>
+
+    <!--交流通讯子项-->
+    <string-array name="communicate">
+        <item>座机费</item>
+        <item>手机费</item>
+        <item>上网费</item>
+    </string-array>
+
+    <!--娱乐旅游子项-->
+    <string-array name="travel">
+        <item>运动健身</item>
+        <item>腐败聚会</item>
+        <item>吃香喝辣</item>
+        <item>宠物宝贝</item>
+        <item>旅游度假</item>
+    </string-array>
+
+    <!--学习进修子项-->
+    <string-array name="study">
+        <item>书报杂志</item>
+        <item>培训进修</item>
+        <item>数码装备</item>
+    </string-array>
+
+    <!--人情往来子项-->
+    <string-array name="human_feeling">
+        <item>送礼请客</item>
+        <item>孝敬父母</item>
+        <item>慈善捐助</item>
+        <item>还人钱财</item>
+    </string-array>
+
+    <!--医疗保健子项-->
+    <string-array name="medical_care">
+        <item>药品费</item>
+        <item>保健费</item>
+        <item>美容费</item>
+        <item>治疗费</item>
+    </string-array>
+
+    <!--行车交通子项-->
+    <string-array name="other">
+        <item>其他</item>
+    </string-array>
+
+    <!--收入类型-->
+    <string-array name="income_type">
+        <item>职业收入</item>
+        <item>其他收入</item>
+    </string-array>
+
+    <!--职业收入-->
+    <string-array name="job_income">
+        <item>工资收入</item>
+        <item>利息收入</item>
+        <item>加班收入</item>
+        <item>奖金收入</item>
+    </string-array>
+
+    <!--其他收入-->
+    <string-array name="other_income">
+        <item>礼金收入</item>
+        <item>中奖收入</item>
+        <item>捡到钱</item>
+    </string-array>
+
+
+    <!--账户列表-->
+    <string-array name="accounts">
+        <item>现金</item>
+        <item>信用卡</item>
+        <item>支付宝</item>
+        <item>微信支付</item>
+        <item>饭卡</item>
+        <item>公交卡</item>
+    </string-array>
+
+</resources>

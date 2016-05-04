@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--预算界面-->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <!--总资产-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/item_height_xxlarge"
+        android:background="@color/background"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:textSize="@dimen/text_size_normal"
+                android:text="@string/this_total_budget"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:textSize="@dimen/text_size_xlarge"
+                android:id="@+id/tv_total_budget"
+                android:text="@string/default_money"
+                android:textColor="@color/number_color"/>
+        </LinearLayout>
+
+        <!--收入和支出-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:paddingLeft="@dimen/margin_normal"
+                android:paddingRight="@dimen/margin_normal"
+                android:background="@drawable/item_border"
+                android:layout_weight="1">
+                <TextView
+                    style="@style/label"
+                    android:text="@string/used" />
+                <TextView
+                    style="@style/label"
+                    android:text="@string/default_money"
+                    android:textColor="@color/red"
+                    android:id="@+id/tv_budget_total_outcome"
+                    android:layout_alignParentRight="true"/>
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:paddingLeft="@dimen/margin_normal"
+                android:paddingRight="@dimen/margin_normal"
+                android:background="@drawable/item_border"
+                android:layout_weight="1">
+                <TextView
+                    style="@style/label"
+                    android:text="@string/usable" />
+                <TextView
+                    style="@style/label"
+                    android:text="@string/default_money"
+                    android:id="@+id/tv_budget_total_surplus"
+                    android:textColor="@color/green"
+                    android:layout_alignParentRight="true"/>
+            </RelativeLayout>
+        </LinearLayout>
+        </LinearLayout>
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/lv_budget_list"></ListView>
+
+</LinearLayout>

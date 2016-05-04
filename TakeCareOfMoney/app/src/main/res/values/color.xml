@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="pink">#FFFF00FE</color> <!-- 粉色-->
+    <color name="btn_color_normal">#FFAFD227</color> <!--按钮颜色-->
+    <color name="btn_color_press">#44AFD227</color> <!--按钮颜色-->
+    <color name="number_color">#FFFA770A</color> <!--显示的数字的颜色-->
+    <color name="item_border">#FFFFE698</color> <!--列表项边界颜色-->
+    <color name="background">#AA23FFBB</color>  <!--背景色-->
+    <color name="green">#FF00FF00</color>
+    <color name="red">#FFFF0000</color>
+    <color name="gray">#AACCCCCC</color>
+    <color name="blue">#FF0000FF</color>
+
+</resources>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    登陆界面
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <EditText
+        style="@style/edit_input"
+        android:layout_marginTop="@dimen/margin_large"
+        android:hint="@string/input_user_name"
+        android:id="@+id/et_user_name"
+        android:singleLine="true"/>
+    <EditText
+        style="@style/edit_input"
+        android:layout_marginTop="@dimen/margin_normal"
+        android:hint="@string/input_user_password"
+        android:singleLine="true"
+        android:id="@+id/et_user_password"
+        android:inputType="textPassword"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="1dp"
+            android:layout_height="1dp"
+            android:layout_centerInParent="true"
+            android:id="@+id/center_login"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/margin_normal"
+            android:background="@drawable/button_selector"
+            android:id="@+id/btn_login"
+            android:layout_toLeftOf="@id/center_login"
+            android:text="@string/login"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btn_register"
+            android:layout_toRightOf="@id/center_login"
+            android:layout_marginLeft="@dimen/margin_normal"
+            android:background="@drawable/button_selector"
+            android:text="@string/register"/>
+    </RelativeLayout>
+
+</LinearLayout>

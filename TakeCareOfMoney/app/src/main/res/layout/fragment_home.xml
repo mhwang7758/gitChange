@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!--上半部分-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/background"
+        android:orientation="horizontal"
+        android:padding="@dimen/margin_normal"
+        android:layout_weight="1">
+        <!--显示日期，本月收入，本月支出，预算结余-->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_weight="2">
+            <!--日期-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:orientation="horizontal"
+                android:layout_weight="1">
+                <TextView
+                    style="@style/label"
+                    android:textSize="@dimen/text_size_xlarge"
+                    android:id="@+id/tv_home_month"
+                    android:textColor="@color/number_color"
+                    android:text="@string/default_month"/>
+                <TextView
+                    style="@style/label"
+                    android:id="@+id/tv_home_year"
+                    android:text="@string/default_year"/>
+            </LinearLayout>
+
+            <!--本月收入-->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+                <TextView
+                    style="@style/label"
+                    android:text="@string/this_month_income"/>
+                <TextView
+                    style="@style/label"
+                    android:id="@+id/tv_this_money_in"
+                    android:textColor="@color/number_color"
+                    android:layout_alignParentRight="true"
+                    android:paddingRight="@dimen/margin_normal"
+                    android:text="@string/default_money"/>
+            </RelativeLayout>
+
+            <!--本月支出-->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+                <TextView
+                    style="@style/label"
+                    android:text="@string/this_month_output"/>
+                <TextView
+                    style="@style/label"
+                    android:id="@+id/tv_this_money_out"
+                    android:textColor="@color/number_color"
+                    android:layout_alignParentRight="true"
+                    android:paddingRight="@dimen/margin_normal"
+                    android:text="@string/default_money"/>
+            </RelativeLayout>
+
+            <!--预算结余-->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+                <TextView
+                    style="@style/label"
+                    android:text="@string/budget_surplus"/>
+                <TextView
+                    style="@style/label"
+                    android:id="@+id/tv_home_budget_surplus"
+                    android:textColor="@color/number_color"
+                    android:layout_alignParentRight="true"
+                    android:paddingRight="@dimen/margin_normal"
+                    android:text="@string/default_money"/>
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <!--预算-->
+        <Button
+            android:layout_width="0dp"
+            android:background="@drawable/user_photo_shape"
+            android:layout_height="match_parent"
+            android:textSize="@dimen/text_size_xlarge"
+            android:gravity="center"
+            android:id="@+id/btn_home_budget"
+            android:text="@string/budget"
+            android:layout_weight="1">
+        </Button>
+    </LinearLayout>
+
+    <!--下半部分-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:layout_weight="2">
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/item_height_normal"
+            android:layout_margin="@dimen/margin_normal"
+            android:background="@drawable/button_selector"
+            android:id="@+id/btn_record"
+            android:textSize="@dimen/text_size_large"
+            android:text="@string/record_money"/>
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/lv_date_item"></ListView>
+    </LinearLayout>
+</LinearLayout>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="mhwang.com.takecareofmoney" >
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <!--预算界面-->
+        <activity android:name="mhwang.com.activity.BudgetActivity"></activity>
+        <!--记录界面-->
+        <activity android:name="mhwang.com.activity.RecordMoneyActivity"></activity>
+        <!--搜索界面-->
+        <activity android:name="mhwang.com.activity.SearchActivity"></activity>
+        <!--选择类型对话框-->
+        <activity android:name="mhwang.com.dialog.SelectTypeDialog"
+            android:theme="@style/Theme.AppCompat.Dialog"></activity>
+        <!--选择账户对话框-->
+        <activity android:name="mhwang.com.dialog.SelectAccountDialog"
+            android:theme="@style/Theme.AppCompat.Dialog"></activity>
+        <!--设置预算对话框-->
+        <activity android:name="mhwang.com.dialog.PresetBudgetDialog"
+            android:theme="@style/Theme.AppCompat.Dialog"></activity>
+        <!--日期选择对话框-->
+        <activity android:name="mhwang.com.dialog.DateSelectDialog"
+            android:theme="@style/Theme.AppCompat.Dialog"></activity>
+    </application>
+
+</manifest>

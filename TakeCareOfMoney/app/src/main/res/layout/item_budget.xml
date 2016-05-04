@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="@dimen/item_height_large"
+    android:minHeight="@dimen/item_height_large">
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:paddingLeft="@dimen/margin_normal"
+        android:id="@+id/iv_item_budget_photo"
+        android:src="@drawable/ic_user_photo"/>
+    <!--右边项-->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingLeft="@dimen/margin_normal"
+        android:paddingRight="@dimen/margin_normal">
+        <!--进度条-->
+        <ProgressBar
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/margin_normal"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_centerInParent="true"
+            android:progressDrawable="@drawable/progressbar"
+            android:progress="80"
+            android:max="100"
+            android:id="@+id/pb_item_budget_probar"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/pb_item_budget_probar">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_item_budget_type"
+                android:textSize="@dimen/text_size_normal"
+                android:text="食品酒水"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/number_color"
+                android:textSize="@dimen/text_size_small"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                android:id="@+id/tv_item_budget_suplus"
+                android:text="余额000000"/>
+        </RelativeLayout>
+        <!--预算-->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv_item_budget_budget"
+            android:text="预算999999.00"
+            android:layout_below="@id/pb_item_budget_probar"/>
+    </RelativeLayout>
+
+
+</LinearLayout>

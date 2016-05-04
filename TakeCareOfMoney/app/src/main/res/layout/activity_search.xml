@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:background="@color/background"
+    android:layout_height="match_parent">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_normal"
+        android:orientation="horizontal">
+
+        <Spinner
+            android:id="@+id/sp_year"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"></Spinner>
+
+        <TextView
+            android:id="@+id/label_year"
+            style="@style/label"
+            android:layout_height="wrap_content"
+            android:text="年" />
+
+        <Spinner
+            android:id="@+id/sp_month"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"></Spinner>
+
+        <TextView
+            android:id="@+id/label_month"
+            style="@style/label"
+            android:layout_height="wrap_content"
+            android:text="月" />
+
+        <Spinner
+            android:id="@+id/sp_day"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"></Spinner>
+
+        <TextView
+            android:id="@+id/label_day"
+            style="@style/label"
+            android:layout_height="wrap_content"
+            android:text="日" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/item_height_normal"
+        android:orientation="horizontal">
+
+        <EditText
+            android:layout_width="0dp"
+            android:layout_height="@dimen/item_height_normal"
+            android:layout_weight="4"
+            android:paddingLeft="@dimen/margin_small"
+            android:id="@+id/et_search_key"
+            android:background="@drawable/edit_selector" />
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:id="@+id/btn_search_search"
+            android:text="@string/search"/>
+    </LinearLayout>
+
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/item_height_xxlarge"
+        android:visibility="gone"
+        android:id="@+id/lv_search_showsearch"></ListView>
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:id="@+id/lv_search_result"></ListView>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/red"
+        android:visibility="gone"
+        android:text="搜索结果为空"
+        android:id="@+id/tv_item_record_emptyView"/>
+</LinearLayout>

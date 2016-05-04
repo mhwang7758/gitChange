@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    详细列表中的组名
+-->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/item_height_large"
+    android:paddingLeft="@dimen/margin_normal"
+    android:paddingRight="@dimen/margin_normal"
+    android:minHeight="@dimen/item_height_large">
+    <TextView
+        style="@style/label"
+        android:id="@+id/tv_detail_group_name"
+        android:textSize="@dimen/text_size_normal"
+        android:text="4月"/>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:orientation="vertical"
+        android:layout_alignParentRight="true">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv_detail_group_income"
+            android:textSize="@dimen/text_size_small"
+            android:textColor="@color/red"
+            android:text="@string/default_money"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv_detail_group_output"
+            android:textSize="@dimen/text_size_small"
+            android:textColor="@color/green"
+            android:text="@string/default_money"/>
+
+    </LinearLayout>
+
+</RelativeLayout>

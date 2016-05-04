@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    详细列表中的列表名下的子项
+-->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/item_height_normal"
+    android:paddingLeft="@dimen/margin_normal"
+    android:paddingRight="@dimen/margin_normal"
+    android:minHeight="@dimen/item_height_normal">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_alignParentLeft="true"
+        android:id="@+id/tv_detail_child_time"
+        android:text="04月5日12:28:33"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_toRightOf="@id/tv_detail_child_time"
+        android:text="早餐"
+        android:layout_marginLeft="@dimen/margin_normal"
+        android:id="@+id/tv_detail_child_name"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_alignParentRight="true"
+        android:textColor="@color/green"
+        android:id="@+id/tv_detail_child_menoy_status"
+        android:text="@string/default_money"/>
+</RelativeLayout>
