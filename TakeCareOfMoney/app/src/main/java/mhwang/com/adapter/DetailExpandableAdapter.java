@@ -1,6 +1,7 @@
 package mhwang.com.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -90,9 +91,15 @@ public class DetailExpandableAdapter extends BaseExpandableListAdapter{
         TextView tv_time = (TextView) convertView.findViewById(R.id.tv_detail_child_time);
         TextView tv_name = (TextView) convertView.findViewById(R.id.tv_detail_child_name);
         TextView tv_status = (TextView) convertView.findViewById(R.id.tv_detail_child_menoy_status);
-        tv_time.setText(record.getTime());
-        tv_name.setText(record.getType());
-        tv_status.setText(Double.toString(record.getMoney()));
+        tv_time.setText(record.getDay()+"日 "+record.getTime());
+        tv_name.setText(record.getType()+"->"+record.getTypeChild());
+        String status = record.getStatus();
+        if (status.equals("支出")){
+            tv_status.setTextColor(Color.GREEN);
+        }else{
+            tv_status.setTextColor(Color.RED);
+        }
+        tv_status.setText(NumberFormat.format(record.getMoney()));
 
         return convertView;
     }

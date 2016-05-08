@@ -57,6 +57,13 @@ public class RecordAdapter extends BaseAdapter{
         notifyDataSetChanged();
     }
 
+    /** 获取数据集
+     * @return
+     */
+    public ArrayList<Record> getData(){
+        return records;
+    }
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
@@ -71,7 +78,7 @@ public class RecordAdapter extends BaseAdapter{
         }else{
             holder = (ViewHolder) convertView.getTag();
         }
-        String date = record.getDay()+"号"+record.getTime();
+        String date = record.getDay()+"日"+record.getTime();
         String type = record.getType()+"->"+record.getTypeChild();
         String status = record.getStatus();
         holder.tv_date.setText(date);

@@ -36,10 +36,10 @@
         android:paddingLeft="@dimen/margin_normal"
         android:paddingRight="@dimen/margin_normal"
         android:layout_height="@dimen/item_height_large">
-        <TextView
+        <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/tv_in_out"
+            android:id="@+id/btn_detail_in_out"
             android:layout_centerInParent="true"
             android:layout_alignParentLeft="true"
             android:text="@string/output"/>
@@ -48,8 +48,8 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/et_record_money"
-            android:layout_toRightOf="@id/btn_in_out"
+            android:id="@+id/et_detail_money"
+            android:layout_toRightOf="@id/btn_detail_in_out"
             android:layout_alignParentBottom="true"
             android:inputType="numberDecimal"
             android:textSize="@dimen/text_size_large"
@@ -58,12 +58,6 @@
             android:gravity="right"
             android:textColor="@color/number_color" />
 
-        <!--分割线-->
-        <TextView
-            style="@style/line_horizonal"
-            android:layout_alignParentBottom="true"
-            android:layout_marginLeft="@dimen/margin_normal"
-            android:layout_marginBottom="@dimen/margin_small"/>
     </RelativeLayout>
 
     <RelativeLayout
@@ -84,6 +78,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerInParent="true"
             android:layout_toRightOf="@id/label_photo"
+            android:id="@+id/iv_detail_photo"
             android:src="@drawable/ic_camera"/>
     </RelativeLayout>
 
@@ -121,7 +116,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/item_height_normal"
-            android:layout_centerInParent="true"
             android:paddingLeft="@dimen/margin_normal"
             android:orientation="horizontal">
             <TextView
@@ -160,6 +154,24 @@
         android:layout_marginTop="@dimen/margin_normal"
         android:layout_marginRight="@dimen/margin_normal"
         android:paddingLeft="@dimen/margin_small" />
+    </LinearLayout>
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/item_height_normal"
+        android:id="@+id/ll_detail_date"
+        android:orientation="horizontal">
+        <TextView
+            style="@style/label_small"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:text="@string/date"/>
+        <TextView
+            style="@style/label"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:id="@+id/tv_detail_date"
+            android:text="@string/cash"/>
     </LinearLayout>
 
     <LinearLayout

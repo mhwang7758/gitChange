@@ -48,6 +48,8 @@
     <string name="edit">编辑</string>
     <string name="delete">删除</string>
     <string name="search_hint">请输入搜索关键词</string>
+    <string name="date">日期</string>
+    <string name="look">查看</string>
 
     <!--默认字符-->
     <string name="default_user_name">老司机带带我</string>

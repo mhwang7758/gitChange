@@ -9,6 +9,7 @@ package mhwang.com.bean;
 public class Record {
     public static final String INCOME = "收入";
     public static final String OUTCOME = "支出";
+    private int id;
     private String time;         // 记录的时间
     private String name;         // 记录的名字
     private String status;       // 记录的状态，支出或收入
@@ -21,6 +22,7 @@ public class Record {
     private int year;           // 记录的年份
     private int month;          // 记录的月份
     private int day;            // 记录的日期（某月的某一日）
+    private String photoPath;  // 图片路径
 
     public  Record(){
         time = "2016.04.09.12:22";
@@ -33,12 +35,21 @@ public class Record {
         year = 2016;
         month = 4;
         day = 20;
+        photoPath = "";
     }
 
     public  Record(String time,String name,double money){
         this.time = time;
         this.name = name;
         this.money = money;
+    }
+
+    public String getPhotoPath() {
+        return photoPath;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getTypeChild() {
@@ -135,5 +146,13 @@ public class Record {
 
     public void setTypeChild(String typeChild) {
         this.typeChild = typeChild;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setPhotoPath(String photoPath) {
+        this.photoPath = photoPath;
     }
 }

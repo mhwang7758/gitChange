@@ -9,6 +9,7 @@ import android.widget.Button;
 import java.util.ArrayList;
 
 import mhwang.com.activity.RecordMoneyActivity;
+import mhwang.com.bean.Request;
 import mhwang.com.takecareofmoney.R;
 import mhwang.com.view.TypePicker;
 import mhwang.com.view.WheelView;
@@ -28,7 +29,7 @@ public class SelectTypeDialog extends Activity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dialog_select_type);
-        boolean isIn = getIntent().getBooleanExtra(RecordMoneyActivity.KEY_WHICH_DATA_TYPE,false);
+        boolean isIn = getIntent().getBooleanExtra(Request.KEY_WHICH_DATA_TYPE,false);
         initComponent();
         if(isIn){
             tp_recordType.changeDataType();
@@ -54,8 +55,8 @@ public class SelectTypeDialog extends Activity{
                 Intent intent = new Intent();
                 String selectType = tp_recordType.getSelectedType();
                 String selectTypeChild = tp_recordType.getSelectedTypeChild();
-                intent.putExtra(RecordMoneyActivity.KEY_SELECT_TYPE,selectType);
-                intent.putExtra(RecordMoneyActivity.KEY_SELECT_TYPE_CHILD,selectTypeChild);
+                intent.putExtra(Request.KEY_SELECT_TYPE,selectType);
+                intent.putExtra(Request.KEY_SELECT_TYPE_CHILD,selectTypeChild);
                 setResult(RESULT_OK,intent);
                 finish();
             }

@@ -6,9 +6,12 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,12 +46,15 @@ import mhwang.com.util.LogUitl;
 public class MoneyReportFragment extends PagerFragment {
     private View mView;
 
-    public final static String[] months = new String[]{"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug",
-            "Sep", "Oct", "Nov", "Dec",};
+    public final static String[] months = new String[]{"1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月",
+            "9月", "10月", "11月", "12月"};
 
 //    public final static String[] days = new String[]{"Mon", "Tue", "Wen", "Thu", "Fri", "Sat", "Sun",};
 
     public final static int LINE_DAYS = 31;
+    public final static int MAX_MONEY = 2000;
+    public final static int ONE_KILOMETER = 1000;
+    public final static int ONE_YEAR_MONTH = 12;
 
     public int[] days;
     private LineChartView chartTop;
@@ -57,14 +63,27 @@ public class MoneyReportFragment extends PagerFragment {
     private LineChartData lineData;
     private ColumnChartData columnData;
 
+    private ImageButton ib_previous;
+    private ImageButton ib_next;
+    private TextView tv_year;
+
+
     double[] monthIncomes;
     double[] monthOutcomes;
     double[] monthSurpluses;
+    private int year;
+
+    private void showLog(String msg){
+        Log.d("--MoneyReportFragment--->", msg);
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initData();
+        // 获取当前月份
+        int curMonth = DateUtil.getInstance().getMonth();
+        getMonthData(year, curMonth);
     }
 
     @Nullable
@@ -72,43 +91,93 @@ public class MoneyReportFragment extends PagerFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.fragment_money_report,null);
         chartTop = (LineChartView) mView.findViewById(R.id.chart_top);
-
+        chartBottom = (ColumnChartView) mView.findViewById(R.id.chart_bottom);
+        ib_previous = (ImageButton) mView.findViewById(R.id.ib_money_report_previous);
+        ib_next = (ImageButton) mView.findViewById(R.id.ib_money_report_next);
+        tv_year = (TextView) mView.findViewById(R.id.tv_money_report_year);
+        initEvent();
         // Generate and set data for line chart
         // 初始化折线数据
 //        generateInitialLineData();
         initLineData();
         // *** BOTTOM COLUMN CHART ***
 
-        chartBottom = (ColumnChartView) mView.findViewById(R.id.chart_bottom);
 
 //        generateColumnData();
         initColumnData();
         return mView;
     }
 
+    private void initEvent(){
+        tv_year.setText(year+"年");
+        ib_previous.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                year -= 1;
+                updateMonthData(year);
+            }
+        });
+
+        ib_next.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                year += 1;
+                updateMonthData(year);
+            }
+        });
+    }
+
+    /** 更新月份数据
+     * @param year
+     */
+    private void updateMonthData(int year){
+        showLog("update year "+year +"data");
+        int curYear = DateUtil.getInstance().getYear();
+        int curMonth = DateUtil.getInstance().getMonth();
+        if (year != curYear) {
+            getMonthData(year, ONE_YEAR_MONTH);
+        }else {
+            showLog("update this year "+curYear +" data");
+            getMonthData(year,curMonth);
+        }
+        initLineData();
+        initColumnData();
+        tv_year.setText(year+"年");
+    }
+
     /**
      *  初始化数据
      */
     private void initData(){
-        // 获取当前月份
-        int curMonth = DateUtil.getInstance().getMonth();
-        getMonthData(curMonth);
+        monthIncomes = new double[ONE_YEAR_MONTH];
+        monthOutcomes = new double[ONE_YEAR_MONTH];
+        monthSurpluses = new double[ONE_YEAR_MONTH];
+        year = DateUtil.getInstance().getYear();
+    }
+
+    /**
+     *  重置月份数据
+     */
+    private void resetMonthsData(){
+        for(int i = 0; i < ONE_YEAR_MONTH; i++){
+            monthIncomes[i] = 0.00;
+        }
     }
 
     /** 获取每个月的数据
-     * @param month
+     * @param monthCounts
      */
-    private void getMonthData(int month){
-        monthIncomes = new double[month];
-        monthOutcomes = new double[month];
-        monthSurpluses = new double[month];
+    private void getMonthData(int year ,int monthCounts){
+        resetMonthsData();
+
         DBUtil dbUtil = DBUtil.getInstance(getActivity());
-        for (int i = 1; i <= month; i++){
-            ArrayList<Record> records = dbUtil.readMonthRecords(i);
+
+        for (int i = 1; i <= monthCounts; i++){
+            ArrayList<Record> records = dbUtil.readRecordsByMonth(year,i);
             double monthOutcome = 0.00;
             double monthIncome = 0.00;
             for(Record record : records){
-                if (record.getStatus() == "支出"){
+                if (record.getStatus().equals("支出")){
                     monthOutcome += record.getMoney();
                 }else{
                     monthIncome += record.getMoney();
@@ -137,11 +206,9 @@ public class MoneyReportFragment extends PagerFragment {
 
             values = new ArrayList<SubcolumnValue>();
             for (int j = 0; j < numSubcolumns; ++j) {
-                if (i < monthSurpluses.length) {
-                    values.add(new SubcolumnValue((float) monthSurpluses[i], ChartUtils.pickColor()));
-                }else{
-                    values.add(new SubcolumnValue(0, ChartUtils.pickColor()));
-                }
+                float KSurplus = (float) monthSurpluses[i] / ONE_KILOMETER;
+                showLog("the column " + i + " Kdata is " + KSurplus);
+                values.add(new SubcolumnValue(KSurplus, ChartUtils.pickColor()));
             }
 
             axisValues.add(new AxisValue(i).setLabel(months[i]));
@@ -151,8 +218,10 @@ public class MoneyReportFragment extends PagerFragment {
 
         columnData = new ColumnChartData(columns);
 
-        columnData.setAxisXBottom(new Axis(axisValues).setHasLines(true));
-        columnData.setAxisYLeft(new Axis().setHasLines(true).setMaxLabelChars(2));
+        columnData.setAxisXBottom(new Axis(axisValues).
+                setHasLines(true).setTextColor(Color.BLACK));
+        columnData.setAxisYLeft(new Axis().setHasLines(true).
+                setMaxLabelChars(2).setTextColor(Color.BLACK).setName("单位(千)"));
 
         chartBottom.setColumnChartData(columnData);
 
@@ -162,6 +231,12 @@ public class MoneyReportFragment extends PagerFragment {
         // Set selection mode to keep selected month column highlighted.
         chartBottom.setValueSelectionEnabled(true);
 
+//        chartBottom.setViewportCalculationEnabled(false);
+
+        // And set initial max viewport and current viewport- remember to set viewports after data.
+        Viewport v = new Viewport(0, 40, 12, 0);
+        chartBottom.setMaximumViewport(v);
+        chartBottom.setCurrentViewport(v);
         chartBottom.setZoomType(ZoomType.HORIZONTAL);
 
 //        chartBottom.setOnClickListener(new View.OnClickListener() {
@@ -260,8 +335,17 @@ public class MoneyReportFragment extends PagerFragment {
         lines.add(outcomeLine);
 
         lineData = new LineChartData(lines);
-        lineData.setAxisXBottom(new Axis(axisValues).setHasLines(true));
-        lineData.setAxisYLeft(new Axis().setHasLines(true).setMaxLabelChars(2));
+        Axis X = new Axis(axisValues);
+        X.setTextColor(Color.BLACK);
+        X.setName("单位(日)");
+        X.setHasLines(true);
+        lineData.setAxisXBottom(X);
+        Axis Y = new Axis();
+        Y.setHasLines(true);
+        Y.setMaxLabelChars(2);
+        Y.setTextColor(Color.BLACK);
+        Y.setName("单位(元)");
+        lineData.setAxisYLeft(Y);
 
         chartTop.setLineChartData(lineData);
 
@@ -269,7 +353,7 @@ public class MoneyReportFragment extends PagerFragment {
         chartTop.setViewportCalculationEnabled(false);
 
         // And set initial max viewport and current viewport- remember to set viewports after data.
-        Viewport v = new Viewport(0, 150, LINE_DAYS, 0);
+        Viewport v = new Viewport(0, MAX_MONEY, LINE_DAYS, 0);
         chartTop.setMaximumViewport(v);
         chartTop.setCurrentViewport(v);
 
@@ -314,7 +398,7 @@ public class MoneyReportFragment extends PagerFragment {
         chartTop.setViewportCalculationEnabled(false);
 
         // And set initial max viewport and current viewport- remember to set viewports after data.
-        Viewport v = new Viewport(0, 150, 30, 0);
+        Viewport v = new Viewport(0, 15000, 30, 0);
         chartTop.setMaximumViewport(v);
         chartTop.setCurrentViewport(v);
 
@@ -328,11 +412,12 @@ public class MoneyReportFragment extends PagerFragment {
     private void updateLineData(int month,float range){
         LogUitl.showLog("MoneyReportFragment","update the month "+month+" line data");
         // 读取这个月份的每一天的数据
+        int year = DateUtil.getInstance().getYear();
         double[] dayIncomes = new double[LINE_DAYS];
         double[] dayOutcomes = new double[LINE_DAYS];
         DBUtil util = DBUtil.getInstance(getActivity());
         for (int i = 0; i < dayIncomes.length; i++){
-            ArrayList<Record> records = util.readRecordsByDay(month,i+1);
+            ArrayList<Record> records = util.readRecordsByDay(year,month,i+1);
             double incomes = 0.00;
             double outcomes = 0.00;
             LogUitl.showLog("MoneyReportFragment","this month day "+(i+1)+"record size is"
@@ -353,20 +438,22 @@ public class MoneyReportFragment extends PagerFragment {
 
         // 修改拆线数据
         Line incomeLine = lineData.getLines().get(0);
+        incomeLine.setColor(Color.GREEN);
         Line outcomeLine = lineData.getLines().get(1);
+        outcomeLine.setColor(Color.RED);
 
         // 修改收入拆线
         ArrayList<PointValue> incomeValus = (ArrayList<PointValue>) incomeLine.getValues();
         for(int i = 0; i < incomeValus.size(); i++){
             PointValue value = incomeValus.get(i);
-            value.setTarget(value.getX(),(float)dayIncomes[i]);
+            value.setTarget(value.getX(),(float)dayIncomes[i]*range);
         }
 
         // 修改支出拆线
         ArrayList<PointValue> outcomeValus = (ArrayList<PointValue>) outcomeLine.getValues();
         for(int i = 0; i < outcomeValus.size(); i++){
             PointValue value = outcomeValus.get(i);
-            value.setTarget(value.getX(),(float)dayOutcomes[i]);
+            value.setTarget(value.getX(),(float)dayOutcomes[i]*range);
         }
 
         // Start new data animation with 300ms duration;
@@ -400,13 +487,13 @@ public class MoneyReportFragment extends PagerFragment {
         @Override
         public void onValueSelected(int columnIndex, int subcolumnIndex, SubcolumnValue value) {
 //            generateLineData(value.getColor(), 100);
-            updateLineData(columnIndex+1,100);
+            updateLineData(columnIndex+1,1);
         }
 
         @Override
         public void onValueDeselected() {
-
-            generateLineData(ChartUtils.COLOR_GREEN, 0);
+            updateLineData(-1, 0);
+//            generateLineData(ChartUtils.COLOR_GREEN, 0);
 
         }
     }

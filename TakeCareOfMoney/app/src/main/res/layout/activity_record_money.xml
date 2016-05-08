@@ -47,7 +47,7 @@
         <RelativeLayout
             android:layout_width="@dimen/item_height_large"
             android:layout_height="@dimen/item_height_large"
-            android:id="@+id/right"
+            android:id="@+id/rl_take_photo"
             android:gravity="center"
             android:background="@color/red"
             android:layout_alignParentRight="true">
@@ -59,9 +59,9 @@
                 android:id="@+id/take_photo"
                 android:text="@string/take_photo"/>
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_above="@id/take_photo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/iv_show_photo"
                 android:src="@drawable/ic_camera"/>
         </RelativeLayout>
 
@@ -78,13 +78,13 @@
             android:text="@string/default_money"
             android:gravity="right"
             android:textColor="@color/number_color"
-            android:layout_toLeftOf="@id/right"/>
+            android:layout_toLeftOf="@id/rl_take_photo"/>
 
         <!--分割线-->
         <TextView
             style="@style/line_horizonal"
             android:layout_alignParentBottom="true"
-            android:layout_toLeftOf="@id/right"
+            android:layout_toLeftOf="@id/rl_take_photo"
             android:layout_marginLeft="@dimen/margin_normal"
             android:layout_marginBottom="@dimen/margin_small"/>
     </RelativeLayout>

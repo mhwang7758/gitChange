@@ -1,12 +1,14 @@
 package mhwang.com.takecareofmoney;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 
@@ -14,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import mhwang.com.abstracts.PagerFragment;
+import mhwang.com.activity.RecordDetailActivity;
 import mhwang.com.adapter.DetailExpandableAdapter;
 import mhwang.com.bean.DateRecord;
 import mhwang.com.bean.Record;
@@ -54,11 +57,37 @@ public class MoneyDetailFragment extends PagerFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.fragment_money_detail,null);
-        LogUitl.showLog("MoneyDetailFragment","onCreateView");
-        initData();
+        LogUitl.showLog("MoneyDetailFragment", "onCreateView");
+
         initComponent();
-        showData();
+
         return mView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        initData();
+        showData();
+        initEvent();
+    }
+
+    /**
+     *  添加事件
+     */
+    private void initEvent(){
+        adapter = new DetailExpandableAdapter(getActivity(),groups,childs);
+        elv_list.setAdapter(adapter);
+        elv_list.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+            @Override
+            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+                Record record = (Record) adapter.getChild(groupPosition,childPosition);
+                Intent intent = new Intent(getActivity(), RecordDetailActivity.class);
+                intent.putExtra(RecordDetailFragment.KEY_RECORD_ID,record.getId());
+                startActivity(intent);
+                return true;
+            }
+        });
     }
 
     /**
@@ -83,8 +112,6 @@ public class MoneyDetailFragment extends PagerFragment {
         tv_income = (TextView) mView.findViewById(R.id.tv_detail_income);
         tv_surplus = (TextView) mView.findViewById(R.id.tv_detail_surplus);
         tv_outcome = (TextView) mView.findViewById(R.id.tv_detail_outcome);
-        adapter = new DetailExpandableAdapter(getActivity(),groups,childs);
-        elv_list.setAdapter(adapter);
     }
 
     /**
@@ -117,12 +144,13 @@ public class MoneyDetailFragment extends PagerFragment {
     private void getData(){
         // 获取当前月份
         int month = DateUtil.getInstance().getMonth();
+        int year = DateUtil.getInstance().getYear();
 
         for (int i = 1; i <= month; i++){
             DateRecord drecord = new DateRecord();
             drecord.setName(i + "月");
             // 获取该月份下的所有记录
-            ArrayList<Record> groupChilds = DBUtil.getInstance(getActivity()).readMonthRecords(i);
+            ArrayList<Record> groupChilds = DBUtil.getInstance(getActivity()).readRecordsByMonth(year,i);
             childs.add(groupChilds);
             double monthIncome = 0.00;
             double monthOutput = 0.00;

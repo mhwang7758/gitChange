@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="mhwang.com.takecareofmoney" >
 
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"></uses-permission>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
+    <uses-permission android:name="android.permission.CAMERA"></uses-permission>
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -22,17 +25,24 @@
         <activity android:name="mhwang.com.activity.RecordMoneyActivity"></activity>
         <!--搜索界面-->
         <activity android:name="mhwang.com.activity.SearchActivity"></activity>
+        <!--单条记录详细界面-->
+        <activity android:name="mhwang.com.activity.RecordDetailActivity"></activity>
+        <!--记录列表界面-->
+        <activity android:name="mhwang.com.activity.RecordListActivity"></activity>
         <!--选择类型对话框-->
         <activity android:name="mhwang.com.dialog.SelectTypeDialog"
             android:theme="@style/Theme.AppCompat.Dialog"></activity>
         <!--选择账户对话框-->
         <activity android:name="mhwang.com.dialog.SelectAccountDialog"
             android:theme="@style/Theme.AppCompat.Dialog"></activity>
+        <!--选择图片对话框-->
+        <activity android:name="mhwang.com.dialog.ShowBigPhotoActivity"
+            android:theme="@style/Theme.AppCompat.Dialog"></activity>
         <!--设置预算对话框-->
         <activity android:name="mhwang.com.dialog.PresetBudgetDialog"
             android:theme="@style/Theme.AppCompat.Dialog"></activity>
         <!--日期选择对话框-->
-        <activity android:name="mhwang.com.dialog.DateSelectDialog"
+        <activity android:name="mhwang.com.dialog.SelectDateDialog"
             android:theme="@style/Theme.AppCompat.Dialog"></activity>
     </application>
 

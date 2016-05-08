@@ -95,7 +95,7 @@ public class AccountFragment extends PagerFragment{
         DBUtil dbUtil = DBUtil.getInstance(getActivity());
         accounts = dbUtil.readAccounts();
         for(Account account : accounts){
-            ArrayList<Record> records = dbUtil.readRecordByAccount(account.getName());
+            ArrayList<Record> records = dbUtil.readRecordsByAccount(account.getName());
             double outcome = 0.00;
             double income = 0.00;
             for (Record record : records){

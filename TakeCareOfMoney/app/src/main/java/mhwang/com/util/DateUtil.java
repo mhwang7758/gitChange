@@ -43,7 +43,7 @@ public class DateUtil {
      * @return
      */
     public int getDaysOfMonth(){
-        int days = calendar.get(Calendar.DAY_OF_MONTH);
+        int days = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
         return days;
     }
 

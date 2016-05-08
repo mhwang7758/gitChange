@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -21,6 +22,7 @@ import java.util.List;
 
 import mhwang.com.abstracts.PagerFragment;
 import mhwang.com.activity.BudgetActivity;
+import mhwang.com.activity.RecordListActivity;
 import mhwang.com.activity.RecordMoneyActivity;
 import mhwang.com.adapter.DateAdapter;
 import mhwang.com.bean.BudgetType;
@@ -87,9 +89,10 @@ public class HomeFragment extends PagerFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initData();
         showLog("onCreate");
     }
+
+
 
     @Nullable
     @Override
@@ -98,7 +101,6 @@ public class HomeFragment extends PagerFragment {
         showLog("onCreateView");
         initComponent();
 
-        initEvent();
         return mView;
     }
 
@@ -107,6 +109,14 @@ public class HomeFragment extends PagerFragment {
         lv_date_item.setAdapter(adapter);
         tv_month.setText("" + month);
         tv_year.setText("/" + year);
+        lv_date_item.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getActivity(), RecordListActivity.class);
+                intent.putExtra(RecordListFragment.KEY_WHICH_FRAGMENT,position);
+                startActivity(intent);
+            }
+        });
     }
 
     /**
@@ -212,7 +222,7 @@ public class HomeFragment extends PagerFragment {
         totalBudgetSurplus = 0.00;
         month = dateUtil.getMonth();
         year = dateUtil.getYear();
-        ArrayList<Record> records = dbUtil.readMonthRecords(month);
+        ArrayList<Record> records = dbUtil.readRecordsByMonth(year,month);
         ArrayList<BudgetType> budgetTypes = dbUtil.readBudgetTypes();
         for (Record record : records){
             if (record.getStatus().equals(MONEY_IN)){
@@ -236,7 +246,8 @@ public class HomeFragment extends PagerFragment {
         double outcome = 0.00;
         int day = DateUtil.getInstance().getDay();
         int month = dateUtil.getMonth();
-        ArrayList<Record> records = dbUtil.readRecordsByDay(month,day);
+        int year = dateUtil.getYear();
+        ArrayList<Record> records = dbUtil.readRecordsByDay(year,month,day);
         if (records.isEmpty()){
             today = new DateRecord("今天","还没有记录",0.00,0.00);
             return today;
@@ -266,7 +277,7 @@ public class HomeFragment extends PagerFragment {
         DateRecord thisWeek;
 
         ArrayList<Record> records = dbUtil.
-                readThisWeekData(dateOfWeek[0], dateOfWeek[1]);
+                readRecordsByWeek(dateOfWeek[0], dateOfWeek[1]);
         if (records.isEmpty()){
             thisWeek = new DateRecord("本周","还没有记录",0.00,0.00);
             return thisWeek;
@@ -289,7 +300,8 @@ public class HomeFragment extends PagerFragment {
      */
     private DateRecord getThisMonthData(){
         int month = dateUtil.getMonth();
-        ArrayList<Record> records = dbUtil.readMonthRecords(month);
+        int year = dateUtil.getYear();
+        ArrayList<Record> records = dbUtil.readRecordsByMonth(year,month);
         DateRecord thisMonth;
         if (records.isEmpty()){
             thisMonth = new DateRecord("本月","还没有记录",0.00,0.00);
@@ -320,10 +332,10 @@ public class HomeFragment extends PagerFragment {
      */
     private DateRecord getThisYearData(){
         int year = dateUtil.getYear();
-        ArrayList<Record> records = dbUtil.readYearRecords(year);
+        ArrayList<Record> records = dbUtil.readRecordsByYear(year);
         DateRecord thisYear;
         if (records.isEmpty()){
-            thisYear = new DateRecord("本月","还没有记录",0.00,0.00);
+            thisYear = new DateRecord("本年","还没有记录",0.00,0.00);
             return thisYear;
         }
 
@@ -368,6 +380,8 @@ public class HomeFragment extends PagerFragment {
     @Override
     public void onResume() {
         super.onResume();
+        initData();
+        initEvent();
         showData();
         showLog("onResume");
     }

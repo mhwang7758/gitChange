@@ -109,7 +109,7 @@ public class BudgetActivity extends Activity {
 //        budgets = readBudgets();
         budgets = DBUtil.getInstance(this).readBudgetTypes();
         for (BudgetType budgetType : budgets){
-            ArrayList<Record> records = DBUtil.getInstance(this).readRecordByType(budgetType.getType());
+            ArrayList<Record> records = DBUtil.getInstance(this).readRecordsByType(budgetType.getType());
             if (records == null){
                 continue;
             }

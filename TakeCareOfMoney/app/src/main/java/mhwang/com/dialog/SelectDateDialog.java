@@ -23,7 +23,7 @@ import mhwang.com.util.DateUtil;
  * 作者：王明海
  * 创建时间：2016/5/3
  */
-public class DateSelectDialog extends FragmentActivity {
+public class SelectDateDialog extends FragmentActivity {
     public static final String KEY_SELECT_DATE = "date";
     @Override
     protected void onCreate(Bundle savedInstanceState) {

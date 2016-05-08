@@ -1,36 +1,32 @@
 package mhwang.com.activity;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import mhwang.com.adapter.RecordAdapter;
 import mhwang.com.adapter.TextAdapter;
 import mhwang.com.bean.Record;
+import mhwang.com.bean.Request;
 import mhwang.com.database.DBUtil;
-import mhwang.com.dialog.DateSelectDialog;
+import mhwang.com.dialog.SelectDateDialog;
 import mhwang.com.takecareofmoney.R;
+import mhwang.com.takecareofmoney.RecordDetailFragment;
 import mhwang.com.util.ChineseToPinYinUtil;
 import mhwang.com.util.DateUtil;
+import mhwang.com.util.NumberFormat;
 import mhwang.com.util.RecordTypeToDBWordUtil;
 
 /**
@@ -66,6 +62,15 @@ public class SearchActivity extends Activity {
      *  搜索的提示词集
      */
     private ArrayList<String> searchHints;
+
+    /**
+     *  打开的详细记录的id
+     */
+    private int detailRecordId;
+    /**
+     *  打开的详细记录在数据集中的位置
+     */
+    private int detailRecordPos;
 
 
     private void showLog(String msg){
@@ -219,6 +224,18 @@ public class SearchActivity extends Activity {
             }
         });
 
+        lv_showSearchResult.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Record record = (Record) adapter.getItem(position);
+                detailRecordId = record.getId();
+                detailRecordPos = position;
+                Intent intent = new Intent(getApplicationContext(),RecordDetailActivity.class);
+                intent.putExtra(RecordDetailFragment.KEY_RECORD_ID,detailRecordId);
+                startActivityForResult(intent, Request.RECORD_DETAIL);
+            }
+        });
+
     }
 
     /** 查找结果
@@ -314,8 +331,34 @@ public class SearchActivity extends Activity {
         if (resultCode != RESULT_OK){
             return;
         }
-        String selectDate = data.getStringExtra(DateSelectDialog.KEY_SELECT_DATE);
-//        tv_date.setText(selectDate);
+        int status = data.getIntExtra(RecordDetailFragment.KEY_RECORD_MODIFY_STATUS,-1);
+        showLog("onActivityResult status is "+status);
+        if (status == RecordDetailFragment.DELETE){
+            // 删除数据集中该记录
+            adapter.getData().remove(detailRecordPos);
+        }else{
+            // 获取该记录修改后的详细信息
+            Record modifyRecord  = DBUtil.getInstance(getApplicationContext()).
+                    readRecordById(detailRecordId);
+            Record detailRecord = adapter.getData().get(detailRecordPos);
+            // 查看时间是否相同，如果不同，则直接将该记录从数据集中删除,否则修改该数据
+            String modifyTime = ""+modifyRecord.getYear()+modifyRecord.getMonth()
+                    +modifyRecord.getDay()+modifyRecord.getTime();
+            String detailTime = ""+detailRecord.getYear()+detailRecord.getMonth()
+                    +detailRecord.getDay()+detailRecord.getTime();
+            if (modifyTime.equals(detailTime)){
+                detailRecord.setMoney(modifyRecord.getMoney());
+                detailRecord.setStatus(modifyRecord.getStatus());
+                detailRecord.setAccount(modifyRecord.getAccount());
+                detailRecord.setNote(modifyRecord.getNote());
+                detailRecord.setType(modifyRecord.getType());
+                detailRecord.setTypeChild(modifyRecord.getTypeChild());
+            }else {
+                adapter.getData().remove(detailRecordPos);
+            }
+        }
+        // 刷新列表
+        adapter.notifyDataSetChanged();
     }
 
 }

@@ -1,24 +1,37 @@
 package mhwang.com.activity;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.io.File;
+
 import mhwang.com.bean.Record;
+import mhwang.com.bean.Request;
 import mhwang.com.database.DBUtil;
 import mhwang.com.dialog.SelectAccountDialog;
 import mhwang.com.dialog.SelectTypeDialog;
+import mhwang.com.dialog.ShowBigPhotoActivity;
+import mhwang.com.dialog.TakePhotoDialog;
 import mhwang.com.takecareofmoney.R;
 import mhwang.com.util.DateUtil;
+import mhwang.com.util.PictureUtil;
 
 /**
  * 项目名称：
@@ -27,16 +40,12 @@ import mhwang.com.util.DateUtil;
  * 创建时间：2016/4/12
  */
 public class RecordMoneyActivity extends Activity {
-    public static final int REQUEST_SELECT_TYPE = 100001;
-    public static final int REQUEST_SELECT_ACCOUNT = 100002;
-    public static final String KEY_SELECT_TYPE = "selectType";
-    public static final String KEY_SELECT_TYPE_CHILD = "selectTypeChild";
-    public static final String KEY_SELECT_ACCOUNT = "selectAccount";
     public static final String KEY_RECORD_STATUS = "moneystatus";
     public static final String KEY_RECORD_MONEY = "money";
-    public static final String KEY_WHICH_DATA_TYPE = "which";
     public static final String DEFALUT_OUTCOME_TYPE = "食品酒水->早午晚餐";
     public static final String DEFALUT_INCOME_TYPE = "职业收入->工资收入";
+    public static final String PHOTO_FILE_NAME = "TCOYMPhotos";
+
     public static final int INCOME = 1;
     public static final int OUTCOME = 0;
 
@@ -49,15 +58,21 @@ public class RecordMoneyActivity extends Activity {
     private EditText et_note;
     private ImageButton ib_back;
     private ImageButton ib_finish;
+    private RelativeLayout rl_takePhoto;
+    private ImageView iv_showPhoto;
 
     private String selectType = "食品酒水";
     private String selectTypeChild = "早午晚餐";
     private String moneyStatus = "支出";
     private double money = 0.00;
+    private String photoPath = "";
+    private String PHOTO_FILE_PATH;
+
+    TakePhotoDialog photoDialog;
 
 
     private void showLog(String msg){
-        Log.d("---RecordMoneyActivity--->",msg);
+        Log.d("---RecordMoneyActivity--->", msg);
     }
 
     /**
@@ -69,8 +84,21 @@ public class RecordMoneyActivity extends Activity {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_record_money);
+        initData();
         initComponent();
         initEvent();
+    }
+
+    /**
+     *  初始化数据
+     */
+    private void initData(){
+        PHOTO_FILE_PATH = Environment.getExternalStorageDirectory().getAbsolutePath()
+                + File.separator+PHOTO_FILE_NAME+File.separator;
+        File file = new File(PHOTO_FILE_PATH);
+        if (!file.exists()){
+            file.mkdir();
+        }
     }
 
     /**
@@ -102,6 +130,19 @@ public class RecordMoneyActivity extends Activity {
             }
         });
 
+        // 开启相机
+        rl_takePhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showPhotoSelectDialog();
+//                Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
+//                photoPath = PHOTO_FILE_PATH + DateUtil.getInstance().getCurrentTime() + ".png";
+//                showLog("we will take the photo to " + photoPath);
+//                intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(photoPath)));
+//                startActivityForResult(intent, Request.RECORD_CAMERA);
+            }
+        });
+
         // 关闭页面
         ib_back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -123,6 +164,50 @@ public class RecordMoneyActivity extends Activity {
             }
         });
 
+    }
+
+    /**
+     *  显示对图片进行操作的对话框
+     */
+    private void showPhotoSelectDialog(){
+        photoDialog = new TakePhotoDialog(this);
+        photoDialog.setOnWhichClickListener(new TakePhotoDialog.OnWhichClickListener() {
+            @Override
+            public void whichClick(int which) {
+                if (which == TakePhotoDialog.TAKE_PHOTO) {
+                    openCamera();
+                } else {
+                    showPhoto();
+                }
+            }
+        });
+        photoDialog.show();
+    }
+
+    /**
+     *  打开相机
+     */
+    private void openCamera() {
+        photoDialog.dismiss();
+        Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
+        photoPath = PHOTO_FILE_PATH + DateUtil.getInstance().getCurrentTime() + ".png";
+        showLog("we will take the photo to " + photoPath);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(photoPath)));
+        startActivityForResult(intent, Request.RECORD_CAMERA);
+    }
+
+    /**
+     *  显示图片
+     */
+    private void showPhoto(){
+        if (photoPath.isEmpty()){
+            photoDialog.dismiss();
+            return;
+        }
+        Intent intent = new Intent(this,ShowBigPhotoActivity.class);
+        intent.putExtra(Request.KEY_PHOTO_PATH,photoPath);
+        startActivity(intent);
+        photoDialog.dismiss();
     }
 
     /**
@@ -153,6 +238,7 @@ public class RecordMoneyActivity extends Activity {
         record.setMonth(util.getMonth());
         record.setDay(util.getDay());
         record.setTime(util.getCurrentTime());
+        record.setPhotoPath(photoPath);
 
         DBUtil.getInstance(this).insertRecord(record);
     }
@@ -170,6 +256,8 @@ public class RecordMoneyActivity extends Activity {
         ib_back = (ImageButton) findViewById(R.id.ib_record_money_back);
         ib_finish = (ImageButton) findViewById(R.id.ib_record_money_finish);
         et_note = (EditText) findViewById(R.id.et_note);
+        rl_takePhoto = (RelativeLayout) findViewById(R.id.rl_take_photo);
+        iv_showPhoto = (ImageView) findViewById(R.id.iv_show_photo);
 
         ll_selectType.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -193,8 +281,8 @@ public class RecordMoneyActivity extends Activity {
      */
     private void showSelectTypeDialog() {
         Intent intent = new Intent(this, SelectTypeDialog.class);
-        intent.putExtra(KEY_WHICH_DATA_TYPE,isIn);
-        startActivityForResult(intent, REQUEST_SELECT_TYPE);
+        intent.putExtra(Request.KEY_WHICH_DATA_TYPE,isIn);
+        startActivityForResult(intent, Request.SELECT_TYPE);
     }
 
     /**
@@ -202,10 +290,11 @@ public class RecordMoneyActivity extends Activity {
      */
     private void showSelectAccountDialog(){
         Intent intent = new Intent(this, SelectAccountDialog.class);
-        startActivityForResult(intent, REQUEST_SELECT_ACCOUNT);
+        startActivityForResult(intent, Request.SELECT_ACCOUNT);
 
     }
 
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -214,14 +303,21 @@ public class RecordMoneyActivity extends Activity {
         }
 
         switch (requestCode){
-            case REQUEST_SELECT_TYPE:
-                selectType = data.getStringExtra(KEY_SELECT_TYPE);
-                selectTypeChild = data.getStringExtra(KEY_SELECT_TYPE_CHILD);
+            case Request.SELECT_TYPE:
+                selectType = data.getStringExtra(Request.KEY_SELECT_TYPE);
+                selectTypeChild = data.getStringExtra(Request.KEY_SELECT_TYPE_CHILD);
                 tv_recordType.setText(selectType+"->"+selectTypeChild);
                 break;
-            case REQUEST_SELECT_ACCOUNT:
-                String account = data.getStringExtra(KEY_SELECT_ACCOUNT);
+            case Request.SELECT_ACCOUNT:
+                String account = data.getStringExtra(Request.KEY_SELECT_ACCOUNT);
                 tv_accountType.setText(account);
+                break;
+            case Request.RECORD_CAMERA:
+                showLog("take the photo path is "+photoPath);
+                Bitmap bitmap = PictureUtil.getBitmap(photoPath);
+                Bitmap newBitmap = PictureUtil.resizeBitmap(bitmap, rl_takePhoto.getWidth(),
+                        rl_takePhoto.getHeight());
+                iv_showPhoto.setImageBitmap(newBitmap);
                 break;
         }
 

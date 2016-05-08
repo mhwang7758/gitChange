@@ -4,9 +4,44 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="match_parent"
     tools:context="lecho.lib.hellocharts.samples.PreviewLineChartActivity$PlaceholderFragment">
+    <!--标题栏-->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:paddingLeft="@dimen/margin_normal"
+        android:background="@color/background"
+        android:paddingRight="@dimen/margin_normal"
+        android:layout_height="@dimen/item_height_normal">
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:src="@drawable/image_back_selector"
+            android:id="@+id/ib_money_report_previous"
+            android:layout_alignParentLeft="true"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size_normal"
+            android:layout_centerInParent="true"
+            android:id="@+id/tv_money_report_year"
+            android:text="@string/record_money"/>
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/ib_money_report_next"
+            android:layout_centerInParent="true"
+            android:src="@drawable/ic_finish"
+            android:layout_alignParentRight="true"/>
+    </RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
     <lecho.lib.hellocharts.view.LineChartView
         android:id="@+id/chart_top"
         android:layout_width="match_parent"
+        android:layout_marginLeft="@dimen/margin_normal"
+        android:layout_marginRight="@dimen/margin_normal"
         android:layout_height="0dp"
         android:layout_weight="1" >
     </lecho.lib.hellocharts.view.LineChartView>
@@ -20,8 +55,11 @@
 
     <lecho.lib.hellocharts.view.ColumnChartView
         android:id="@+id/chart_bottom"
+        android:layout_marginLeft="@dimen/margin_normal"
+        android:layout_marginRight="@dimen/margin_normal"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1" >
     </lecho.lib.hellocharts.view.ColumnChartView>
+    </LinearLayout>
 </LinearLayout>
